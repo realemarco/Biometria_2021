@@ -97,7 +97,11 @@ rep(c("a", "b", "c"), times = 2)
 # se vogliamo che ogni elemento venga ripetuto un determinato n e che poi si passi all'elemento succ. utilizzo l'argomento each
 rep(c("a", "b", "c"), each = 2) # per ottenere "a", "a", "b", "b", "c", "c"
 
-# 05/11/2021
+# 05/11/2021 continuazione sui vettori
+1:10 #sequenza da 1 a 10
+seq(1,10) # con la funzione seq ottengo lo stesso ma inconveniente perchè utilizzo + caratteri
+seq(1, 10, by = 2) # posso ottenere lo stesso utilizzando 3 argomenti, l'argomento by ci da gli step, otteniamo tutti i dispari tra 1 e 10
+seq(10, 1, by = -2) # su by devo dare anche la direzione che in questo caso deve sottrarre
 
 
 
