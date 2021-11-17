@@ -1,0 +1,17 @@
+# Biometria e Statistica modulo 2, Pietro Zannini
+# 02/11/2021
+
+# il primo comando su RStudio 
+# con la funzione print posso immettere messaggi nella funzione
+print("Hello World!") # per mandare il comando su RStudio clicca ctrl+invio
+
+# posso usare RStudio come una calcolatrice
+1 + 1 # lancio con ctrl+invio e ottengo il risultato in console
+2-1 # sottraggo
+2*3 # moltiplico
+4/2 # divido
+3^2 # posso esponenziare tramite il simbolo ^ (anche 3**2)
+5 %% 2 #tramite %% posso ottenere il resto di 5/2 --> fa 2 con il resto di 1 (1 è il resto detto anche modulo).
+# tramite %% posso capire se un numero è pari o dispari, se è pari e lo divido per 2 il resto sarà = 0
+5 %/% 2 # per calcolare il quoziente della divisione, la parte a sinistra della virgola
+
