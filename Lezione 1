@@ -38,7 +38,75 @@ my_character <- "universe" # dati sottoforma di testo (character), sempre tra vi
 
 my_logical <- T # i valori logici, dei veri T e falsi F (1 e 0). sempre MAIUSCOLO. 
 # T = TRUE
-# F = FALSE
+# F = FALSE # evitare di utilizzare T o F come nomi di variabili per evitare errori di sintassi
 
-# sei a 60min di registrazione
+# funzione class per restituire la CLASSE dell'oggetto, capire il tipo di dato
+class(my_numeric) # sulla console mi dice la classe corrispondente
+class(my_interger)
+class(my double) # è un numeric 
+class(my_character)
+class(my_logical)
+
+# funzione c (combine) per creare vettori legando + elementi
+# vettore numerico
+my_numeric_vector <- c(1, 10, 49) # scelgo il nome per la mia variabile, in parentesi dopo c metto gli elementi divisi dalle virgole
+# ho creato un vettore di tipo numerico con 3 elementi
+my_numeric_vector # per visualizzarlo
+
+# vettore di characters
+my_character_vector <- c("a", "b", "c") #le lettere sempre tra " altrimenti R cerca una variabile corrispondente
+my_character_vector
+# se chiamando il vettore ometto le parentesi 
+my_character_vector <- c("a", "b", "c", x) # R cerca la variabile x e scrive i valori corrispondenti (in questo caso 42). Sto forzando un tipo di dati in un altro
+my_character_vector # per visualizzarlo
+
+# vettore di logical
+my_logical_vector <- c(T, T, F, T) # anche my_logical_vector <- c(TRUE, TRUE, FALSE, TRUE)
+my_logical_vector # per visualizzarlo
+
+# operazioni tra vettori
+my_apples_vector <- c(50, 70, 80, 30, 150)
+my_apples_vector
+my_oranges_vector <- c(40, 60, 80, 100, 80)
+my_oranges_vector
+
+# avendo i vettori corrispondenti alla frutta raccolta, voglio il valore tot x giorno tra mele e arance
+my_fruit_vector <- my_apples_vector + my_oranges_vector # sommo i 2 vettori che hanno la stessa lunghezza
+my_fruit_vector # visualizzo il vettore corrispondente alla somma degli oggetti
+
+# se i vettori hanno lunghezze differenti
+my_apples_vector <- c(50, 70, 80, 30, 150)
+my_apples_vector
+my_oranges_vector <- c(40, 60, 80, 100)
+my_oranges_vector
+my_fruit_vector <- my_apples_vector + my_oranges_vector # sommo i 2 vettori di lunghezze differenti
+my_fruit_vector # messaggio di warning che dice che per i due vettori, 1 NON è il multiplo dell'altro
+# l'ultimo valore, 190, è l'ultimo del + lungo e il primo del + corto. Il + corto viene riciclato
+
+# diversi modi per creare sequenze, vettori 
+1:10 # se voglio una lista di numeri da 1 a 10
+10:1 # anche decrescenti 
+
+# creare vettore tramite ripetizione
+# funzione rep
+rep(c("a", "b", "c"), times = 2) 
+# come primo argomento scrivo cose voglio ripetere es. quì un vettore quindi mettiamo all'interno la funzione c
+# il seconodo argomento dopo la virgola è detto times e indica il numero di volte che voglio ripetere il vettore
+# così ottengo in console --> "a" "b" "c" "a" "b" "c"
+
+# se vogliamo che ogni elemento venga ripetuto un determinato n e che poi si passi all'elemento succ. utilizzo l'argomento each
+rep(c("a", "b", "c"), each = 2) # per ottenere "a", "a", "b", "b", "c", "c"
+
+# 05/11/2021
+
+
+
+
+
+
+
+
+
+
+
 
