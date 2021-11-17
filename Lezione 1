@@ -15,3 +15,30 @@ print("Hello World!") # per mandare il comando su RStudio clicca ctrl+invio
 # tramite %% posso capire se un numero è pari o dispari, se è pari e lo divido per 2 il resto sarà = 0
 5 %/% 2 # per calcolare il quoziente della divisione, la parte a sinistra della virgola
 
+# per creare variabili che contengano i miei valori uso il simbolo dell'assegnazione <-
+x <- 42 # la variabile è x che contiene 42 al suo interno. Posso visualizzarla sull'environment sulla dx
+x # se scrivo x in console visualizzo cosa contiene la variabile x
+
+# Possiamo creare + variabili e fare operazioni
+my_apples <- 5 # ho 5 mele
+my_oranges <- 6 # ho 6 arance
+my_apples + my_oranges # ctrl + invio e avrò il tot
+rm(x) # funzione rm (remove) se voglio rimuovere una variabile 
+x # se rilancio la variabile avrò un errore
+
+ls() # funzione list per visualizzare tutto quello che abbiamo creato, e che è presente in environment, sulla console
+
+# scrivo + variabili, corrispondono ai 3 tipi di dati in R
+
+my_numeric <- 42 # dato di tipo numerico, i numerici si dividono in 2 sottogruppi
+my_integer <- 42L # i numeri interi (integer). Se voglio specificare che è un integer aggiungo L perchè il default è sempre decimale
+my_double <- 42.24 # i numeri decimali (double). Il separatore decimale è SEMPRE il punto
+
+my_character <- "universe" # dati sottoforma di testo (character), sempre tra virgolette "" oppure ''
+
+my_logical <- T # i valori logici, dei veri T e falsi F (1 e 0). sempre MAIUSCOLO. 
+# T = TRUE
+# F = FALSE
+
+# sei a 60min di registrazione
+
