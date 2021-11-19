@@ -103,14 +103,40 @@ seq(1,10) # con la funzione seq ottengo lo stesso ma inconveniente perchè utili
 seq(1, 10, by = 2) # posso ottenere lo stesso utilizzando 3 argomenti, l'argomento by ci da gli step, otteniamo tutti i dispari tra 1 e 10
 seq(10, 1, by = -2) # su by devo dare anche la direzione che in questo caso deve sottrarre
 
+# torniamo a costruire i vettori
+apples_vector <- c(20, 50, 30, 40, 100) # numero di mele e arance raccolte durante la settimana
+oranges_vector <- c(70, 70, 50, 20, 80) # si tratta di vettori numerici, non sono integer perchè avremmo dovuto specificare il valore integer con una L
 
+# il giorno della settimana corrispondete ci viene dato dalla posizione nel vettore, ma se ho tanti dati?
+# posso dare dei nomi a ciascun elemento all'interno del vettore tramite la funzione names
+# funzione names
+names(apples_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") # assegno dei nomi a ciascun valore --> il 1° si chiamerà Monday e così via
+names(apples_vector) # visualizzo i nomi
+apples_vector # visualizzo i nomi e i valori corrispondenti
 
+# facciamo lo stesso con il secondo vettore
+names(oranges_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(oranges_vector)
+oranges_vector
 
+# posso sommarli per creare un solo vettore
+oranges_vector + apples_vector # i nomi vengono ereditati perchè sono gli stessi
 
+# funzine typeof per risalire al tipo di dato
+typeof(1:3) # [1] "integer"
+typeof(oranges_vector) # è double perchè non abbiamo specificato la L
 
+# funzione per testare se un valore appartiene ad un tipo o meno -> funzioni che iniziano con is
+is.numeric(oranges_vector) # [1] TRUE
+is.character(oranges_vector) # [1] FALSE
+is.double(oranges_vector) # [1] TRUE
+is.integer(oranges_vector) # [1] FALSE
+is.logical(oranges_vector) # [1] FALSE
 
-
-
-
-
+# funzioni che ci permettono di coercere (convertire) un dato in un altro tipo -> funzioni che iniziano per as
+as.character(oranges_vector) # avrò gli stessi valori ma all'interno di virgolette perchè sono diventati character
+as.logical(oranges_vector) # tutti i valori verranno convertiti in TRUE perchè qualsiasi valore diverso da zero è T
+typeof(c("a", "b")) # [1] "character" , se ho + parentesi sto annidando una funzione
+is.character(c("a", "b")) # [1] TRUE 
+# sei a 55min
 
