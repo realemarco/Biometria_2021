@@ -138,5 +138,44 @@ as.character(oranges_vector) # avrò gli stessi valori ma all'interno di virgole
 as.logical(oranges_vector) # tutti i valori verranno convertiti in TRUE perchè qualsiasi valore diverso da zero è T
 typeof(c("a", "b")) # [1] "character" , se ho + parentesi sto annidando una funzione
 is.character(c("a", "b")) # [1] TRUE 
-# sei a 55min
+
+# funzione lenght per ottenere il numero di elementi del vettore
+logical_vector <- c(T,F)
+length(logical_vector) # [1] 2
+length(oranges_vector) # [1] 5
+
+# INDICIZZAZIONE, creare sottoset di dati
+# come selezionare gli elementi dei vettori -> tramite il nome
+apples_vector["Wednesday"] # seleziono il giorno che mi interessa: nome+parentesi quadre
+# Wednesday: 30 -> ho trovato il valore, posso assegnarlo ad un altra variabile
+apples_wednesday <- apples_vector["Wednesday"]
+apples_wednesday # lo visualizzo
+# vale lo stesso per un vettore di + nomi
+apples_vector[c("Monday", "Friday")] # voglio estrarre solo venerdì e lunedì
+
+# come selezionare gli elementi dei vettori -> tramite la posizione
+apples_vector[1]
+apples_vector[5]
+# se non ci ricordiamo quanto è lungo il vettore, possiamo estrarre l'ultimo, quello con la posizione pari alla lunghezza, richiamando la funzione lengh
+apples_vector[length(apples_vector)] # applico la funzione length al vettore stesso
+apples_vector[1:3] # se voglio ottenere i primi tre valori
+apples_vector[3:1] # se scrivo così cambio l'ordine e ottengo l'inverso
+
+# metodi sottrattivi per ottenere tutti i valori tranne alcuni
+apples_vector[-c(1,3)] # escluderò 2 valori, solo con i numerici
+apples_vector[-(1:3)] # escluderà i primi 3
+
+# come vedere quali elementi soddisfano condizioni (<,>,= etc.)
+apples_vector > 80 # ottengo un T e F in base a quali soddisfano la condizione
+# Monday   Tuesday Wednesday  Thursday    Friday 
+#   FALSE     FALSE     FALSE     FALSE      TRUE
+selection_vector <- apples_vector > 80 # lo rinomino
+apples_vector[selection_vector] # ottengo solo il venerdì
+apples_vector[apples_vector < 80] # tutti gli elementi < di 80, con questa dicitura ho direttamente gli emeneti e non i F e T
+apples_vector[apples_vector <= 40] # minore uguale
+apples_vector[apples_vector >= 40] # maggiore uguale
+apples_vector[apples_vector == 40] # elementi uguali ad un particolare valore
+apples_vector[apples_vector != 40] # ! per negare, vuol dire NON uguale
+
+
 
