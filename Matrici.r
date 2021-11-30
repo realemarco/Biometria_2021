@@ -97,7 +97,34 @@ community_matrix # la formattazione sarà quella corretta
 dim(community_matrix) # otterrò sempre un vettore di numeri interi integer di lunghezza 2
 # [1] 4 3 quattro righe e tre colonne 4x3 -> prima SEPRE le righe
 
-#sei a 38min
+# funzione nrow per il numero di righe
+nrow(community_matrix) # [1] 4
+
+# funzione ncol per il numero di colonne
+ncol(community_matrix) # [1] 3
+
+# posso fare delle somme per colonna o per riga
+# sommo per colonna tramite la funzione colSums per ottenere il tot di individui per ogni specie
+colSums(community_matrix)
+#Parus major Erithacus rubecula  Passer domesticus 
+#    29                 18                 30 
+# sommo per riga tramite la funzione rowSums per ottenere il numero di individui per ciascun sito
+rowSums(community_matrix)
+#Garden   Forest Hedgerow     Park 
+#  27       13       18       19 
+
+# possiamo applicare operatori matematici
+
+
+
+
+
+
+
+
+
+
+
 
 
 
