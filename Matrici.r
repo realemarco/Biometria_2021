@@ -113,20 +113,28 @@ rowSums(community_matrix)
 #Garden   Forest Hedgerow     Park 
 #  27       13       18       19 
 
+# se vogliamo aggiungere un'altra riga con il totale --> leghiamo tramite la funzione rbind
+rbind(community_matrix, Total = colSums(community_matrix)) # lego la matrice al risultato di colSums
+
+# # se vogliamo aggiungere un'altra colonna con il totale --> leghiamo tramite la funzione cbind
+cbind(community_matrix, Total = rowSums(community_matrix)) #  # lego la matrice al risultato di rowSums
+
 # possiamo applicare operatori matematici
+community_matrix + 2 # se voglio aggiungere 2 individui x tutte le specie
+# è una operazione scalare perchè viene applicata a tutti gli elementi in = modo
 
+# se voglio x 2
+community_matrix * 2
 
-
-
-
-
-
-
-
-
-
-
-
+# se voglio lavorare solo su 1 elemento devo selezionarlo tramite indexin come per i vettori ma quì sono diverse le dimensioni, ne abbiamo 2
+community_matrix[1, 2] # voglio selezionare il primo elemento della seconda colonna (SEMPRE prima le righe)
+community_matrix[1, ] # voglio tutti i valori della prima riga, non metto nulla dopo la virgola
+community_matrix[1:2, ]# se voglio estrarre le prime due righe
+community_matrix[c(1, 3), ]# se voglio estrarre la riga 1 e 3 uso la funzione combine
+community_matrix[-1, ]# se voglio rimuovere la prima riga
+community_matrix[,"Parus major"] # se voglio estrarre colonne utilizzando i nomi
+community_matrix[2,"Parus major"]# se voglio il secondo elemento della colonna Parus major
+community_matrix[, 2:ncol(community_matrix)] # se voglio dalla seconda colonna fino all'ultima (ncol restituisce l'indice dell'ultima colonna)
 
 
 
