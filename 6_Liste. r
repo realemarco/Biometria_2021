@@ -1,0 +1,32 @@
+# 12/11/21
+# creo la mia prima lista
+vec <- 1:10 # per prima cosa creo un vettore che chiamo vec con una sequenza da 1 a 10
+mat <- matrix(1:9, ncol = 3) # creo una matrice a 3 colonne 
+dat <- mtcars # ottengo uno dei dataframe salvati su R, sono dati di auto
+
+# per crare la lista la assegno ad un oggetto e all'interno della funzione list elenco i componenti
+my_list <- list(vec, mat, dat)
+# ottengo cose del genere
+#[[1]] le [[ servono x distinguere i componenti della lista
+ #[1]  1  2  3  4  5  6  7  8  9 10
+
+# possiamo anche assegnare nomi alle componenti
+my_list <- list(my_vector = vec, my_matrix = mat, my_dataframe = dat)
+
+# ottengo $my_vector (invece che [[1]])
+#[1]  1  2  3  4  5  6  7  8  9 10
+
+list(my_list, 1:10) # così ottengo il primo elemento che al suo interno ha una lista ???
+# abbiamo nella lista una lista composta da un vettore e un dataframe e come seconda un vettore
+# signofica annidare le liste
+
+# possiamo aggiungere elementi alla lista usando la [[
+my_list[["my_other_vector"]] <- c("blah", "blah", "blah")
+
+# posso aggiungere elementi anche con il $
+my_list$my_last_vector <- c(T, F, T)
+
+# sei a 1,30
+
+
+
