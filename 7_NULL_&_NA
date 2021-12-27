@@ -1,0 +1,64 @@
+# 16/11/2021
+# NULL è un tipo di dato a parte
+# rappresenta l'indefinito ed è assimilabile ad una lsita vuota
+
+class(NULL)
+typeof(NULL) # restituiscono sempre il tipo di dato NULL
+
+# funzioni della famiglia as
+as.null(1:3) #convertire una sequenza a NULL
+
+# funzioni famiglia is
+is.null(NULL) # per capire se qualcosa abbia il valore null (F, T)
+
+# funzione pairlist per creare liste vuote
+is.null(pairlist())
+# True
+
+# valori NA -> not avaiable
+# non sono una struttura di dato ma un valore particolare all'interno di diversi tipi di dato
+# NA logici, character, numerici e integer
+# li troviamo quando importiamo dati rettangolari 
+ typeof(NA) # di default sarà logical
+ 
+ # per capire se un valore è NA
+ is.na(NA)
+ 
+ # per creare un vettore contenente valori NA e non
+ vec <- c(1, NA, 4, 6, 10)
+ is.na(vec) # T e F per ciascun elemento
+ 
+# funzione sum per sommare tutti i valori forniti e fare una sommatoria
+sum(1:3) # la sommatoria sarà 1+2+3 
+
+# se al vettore 1:3 aggiungo un NA
+sum(c(1, 2, 3, NA)) # così ottengo un NA
+
+# per ottenere un sum devo fornire un altro argomento per non contare NA nel sum e ottenere comunque un risultato
+sum(c(1, 2, 3, NA), na.rm = T) # na.rm per rimuovere gli NA prima di fare l'operazione
+
+# sempre per omettere gli NA, restituisce un nuovo oggetto senza gli NA
+na.omit(c(1, 2, 3, NA))
+#[1] 1 2 3
+#attr(,"na.action") # l'indice del valore NA
+#[1] 4
+#attr(,"class") # la classe dell'azione cioè omettere, non quella delle strutture di dati
+#[1] "omit"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
