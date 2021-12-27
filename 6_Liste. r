@@ -24,9 +24,40 @@ list(my_list, 1:10) # così ottengo il primo elemento che al suo interno ha una 
 my_list[["my_other_vector"]] <- c("blah", "blah", "blah")
 
 # posso aggiungere elementi anche con il $
-my_list$my_last_vector <- c(T, F, T)
+my_list$my_last_vector <- c(T, F, T) 
 
-# sei a 1,30
+# posso visualizzarne la struttura
+str(my_list) #vediamo quello visto per i dataframe ma annidato. ci dice il n di componenti e pon info sui singoli elementi
 
+# possiamo rimuovere valori dalle liste
+# es. non vogliamo + il dataframe
+my_list[[3]] #così lo seleziono
+my_list[[3]] <- NULL #così gli attribuisco l'insieme vuoto e lo elimino da my_list
+
+# se voglio estrarre solo alcuni elementi dalle componenti della lista
+my_list[[1]][3] #così chiamo la prima componente di my_list e dico che voglio l'elemento al suo interno con indice 3
+
+# possiamo attribuire nomi alle liste già costruite
+names(my_list) #visualizzo i nomi
+
+# se voglio rinominarli
+names(my_list) <- c("A", "B", "C", "D")
+str(my_list) #vedrò che i nomi delle componenti sono stati aggiornati
+
+# di solito si fa x le liste senza nome
+my_list2 <- list(1:2, T, c("hello", "world"))
+# prima componente = vettore di lunghezza 2 integer
+# seconda componente = vettore buleano?? di lunghezza 1
+# terza componente = vettore character di lunghezza 2
+# le componenti non hanno nome, vengono identificate da [[indice]]
+
+# se voglio attribuire i nomi
+names(my_list2) <- c("Prima", "Seconda", "Terza") # un vettore di nomi x rinominare
+
+# è possibile unire delle liste anche con la funzione c
+c(my_list, my_list2) #avrò una unione delle 2 liste (non una lista annidata)
+
+# è diverso di fare 
+list(my_list, my_list2) #perchè così creo una prima componente che è una lista annidata
 
 
