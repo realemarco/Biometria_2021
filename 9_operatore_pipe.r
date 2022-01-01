@@ -14,8 +14,12 @@ sqrt(log_42)
 # [1] 1.933305
 # se hai matrici e salvi valori intermedi con troppi numeri occupi troppa RAM
 
-# 3. uso l'operatore pipe |>??? nonn funziona
-42 |> log() # così ho il log
-42 |> log() |> sqrt() # posso concatenare le funzioni così
+# 3. uso l'operatore pipe %>% del pacchetto magrittr 
+# se hai versioni di R + recenti puoi utilizzare l'operatore senza installare il pacchetto con l'operatore nativo |>
+install.packages("magrittr")
+library(magrittr)
+42 %>% log() # così ho il log
+42 %>% log() %>% sqrt() # posso concatenare le funzioni così
 # non ho bisogno di salvare intermedi e leggo in maniera naturale l'ordine delle funzioni applicate
+
 
