@@ -39,12 +39,34 @@ sum(c(1, 2, 3, NA), na.rm = T) # na.rm per rimuovere gli NA prima di fare l'oper
 
 # sempre per omettere gli NA, restituisce un nuovo oggetto senza gli NA
 na.omit(c(1, 2, 3, NA))
-#[1] 1 2 3
-#attr(,"na.action") # l'indice del valore NA
-#[1] 4
+#[1] 1 2 3 è il vettore che ci interessa
+#attr(,"na.action") 
+#[1] 4 # l'indice del valore NA che viene omesso
 #attr(,"class") # la classe dell'azione cioè omettere, non quella delle strutture di dati
 #[1] "omit"
 
+# NA è un valore che si propaga
+10 + NA # fa NA
+NA ^ 2 # fa sempre NA
+
+# ci sono 2 casi particolari
+FALSE & NA # & = intersezione di due insiemi = è vera una cosa e l'altra?
+# se entrambe vere il risultato è F
+# se entrambe false il risultato è F
+# se una è F e una è T il risultato è F???
+# FALSE & NA  il risultato è F perchè F e qualcosa è sempre F ???
+
+TRUE | NA 
+# il risultato sarà TRUE???
+
+length(NA) # è 1 perchè difatti il valore esiste
+
+NaN # not a number es 0/0 è un segnaposto x valori indefiniti
+# è diverso da NA e null
+class(NaN) # è numeric
+
+Inf # per indicare infinito es 1/0
+-Inf # meno infinito es -1/0
 
 
 
