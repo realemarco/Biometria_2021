@@ -36,9 +36,8 @@ dune.env <- read.csv("data/dune_env.csv",
 
 dune.env$Moisture <- factor(dune.env$Moisture, ordered = T) # moisture era ancora un integer, lo modifico e al suo posto incollo il risutlato della funzione factor
 dune.env$Manure <- factor(dune.env$Manure, ordered = T) # lo stesso com manure
-dune.env$Use <- factor(dune.env$Use, ordered = T) # non c'è bisogno di specificare l'ordine con level perchè sono già in ordine alfabetico
+dune.env$Use <- factor(dune.env$Use, ordered = T) # non c'è bisogno di specificare l'ordine con level perchè sono già in ordine alfabetico, altrimenti avrei dovuto specificarli con c("","","")
 
-
-
+# 30/11/2021
 
 
