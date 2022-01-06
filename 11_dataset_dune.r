@@ -37,7 +37,110 @@ dune.env <- read.csv("data/dune_env.csv",
 dune.env$Moisture <- factor(dune.env$Moisture, ordered = T) # moisture era ancora un integer, lo modifico e al suo posto incollo il risutlato della funzione factor
 dune.env$Manure <- factor(dune.env$Manure, ordered = T) # lo stesso com manure
 dune.env$Use <- factor(dune.env$Use, ordered = T) # non c'è bisogno di specificare l'ordine con level perchè sono già in ordine alfabetico, altrimenti avrei dovuto specificarli con c("","","")
+str(dune.env)
 
 # 30/11/2021
+# nb puoi richiamare i dataset anche con data("dune") e data("dune.env") se hai caricato il pacchetto vegan con library(vegan)
+# prima fase esplorativa del dataset
+# summary statistics
+summary(dune) # non ci dicono tanto
+summary(dune.env) # è + informativo
+# prima colonna ha valori numerici continui
+# abbiamo il range compresi tra 2,8 e 11,5 prob. cm di suolo
+# media e mediana vicine tra di loro e vicine ai valori del minimo
+# summary di un factor abbiamo le frequenze di ciascuna categoria
+# se hai dubbi lancia ?dune
+
+# es. posso osservare la distribuzione della variabile numerica A1
+# come? tramite un istogramma tramite la funzione hist
+hist(dune.env$A1) # in ascissa le modalità e in ordinata la frequenza di A1
+# i quadrati rappresentano la frequenza dei valori 
+# è la visualizzazione di default, possiamo renderla > leggibile:
+# 1. modificare il n di colonne 
+hist(dune.env$A1,
+     xlab = "Thickness of soil A1 horizon (cm)", # argomento xlab per modificare la label delle ascisse
+    main = NULL, # per modificare il titolo, in questo caso per rimuoverlo
+    breaks = 10 # x cambiare il numero di colonne
+    ) 
+# il n di breaks deve essere adeguato, non troppo dispersivo e non troppo sintetico
+# con 10 la > parte delle osservazioni è tra 2 e 7 con una certa asimmetria 
+# ho due osservaizoni completamente separate dalle altre
+
+# potremmo fare lo stesso con i factor
+# non possiam usare gli istogrammi (questi descrivono variabili continue)
+# il corrispettivo per una qualitativa è un bar plot
+# prima calcoliamo le frequenze delle variabili che abbiamo già visto lanciando il summary però non abbimao assegnato il summary a nulla
+# calcoliamo le frequenze con la funzione table che crea delle tabelle di contingenza
+# la + semplice riguarda 1 singola variabile es. management
+table(dune.env$Management)
+# BF HF NM SF 
+# 3  5  6  6 
+# assegno ad un oggetto
+man_counts <- table(dune.env$Management)
+
+# chiamo la funzione barplot sull'oggetto
+barplot(man_counts) # in ordinate le frequenze
+# hist descrive la variabile continua separandoli con intervalli variabili
+# un bar plot ha le frequenze delle categorie e sono intervalli non modificabili
+barplot(man_counts, # posso modificarlo
+        xlab = "Management type", # per modificare il titolo asse x
+        ylab = "Number of plots") # per modificare il nome asse y
+
+# se ci interessa vedere la frequenza di una variabile rispetto ad un altra possiamo utilizzare la funzione table
+counts <- table(dune.env$Manure,# associo sempre ad un oggetto
+      dune.env$Management) # per vedere la frequenza di manure rispetto a quella di management
+# ottengo una matrice
+# i nomi delle righe (da 0 a 4) sono i nomi dei livelli di manure
+# i nomi delle colonne sono quelli di management
+#  BF HF NM SF
+  #0  0  0  6  0
+  #1  2  1  0  0
+  #2  1  2  0  1
+  #3  0  2  0  2
+  #4  0  0  0  3
+
+# richiamo la funzione barplot
+barplot(counts) # le colonne hanno colori differenti
+# i colori si riferiranno alla variabile manure
+# es NM aveva solo 0 quindi il grigion scuro potrebbe essere zero
+
+# possiamo fornire altri argomenti
+barplot(counts,
+       xlab = "Management type",
+       ylab = "Manure quantity",
+       main = "Plot distribuition by Manure adn Management",# x aggiungere un titolo
+        legend = rownames (counts),# x la legenda, che nomi dare ai valori associati ai colori
+       xlim = c(0, 6)))# per fare spazion definisco i limiti dell'asse x così da evitare sovrapposizioni della legenda
+
+# potremmo calcolare la frequenza vista poco fa rispetto a tuto il database o ad una variabile, condizionando le frequenze
+# per farlo creiamo una tabella di contingenza con table
+# la diamo in pasto alla funzione prop.table 
+prop.table(counts) # invece di avere il conto delle osservazioni abbiamo delle proporzioni
+# es. il 30% delle osservazioni corrispondono ad NM con un valore di manure 0
+# la somma di tutti i valori riporta ad 1 perchè stiamo calcolando la % su n. tot osservazioni
+# per dimostrarlo:
+# bf con valore 1 di manure è 2, 2 rispetto a 20 (le righe che abbiamo)n è il 10%
+# visualizzerò 10% nella tabella con prop.table
+
+# se vogliamo calcolare le % rispetto a righe o colonne serve argomento margin
+prop.table(counts, margin = 1) # 1 = le righe, 2 = colonne, solo 2 possibili margini
+# es. al 100% di osservazioni con valore di manure 0 corrispondono al tipo di management NM
+
+
+# altri grafici standard sono i box plot
+# per crearne uno serve 1 variabile quantitativa in y e una qualitativa in x
+boxplot(sr ~ dune.env$Use) # sr in funzione dell'uso ~  in funzione di 
+
+# anche quì i nomi sono modificabili
+
+boxplot(sr ~ dune.env$Use,
+       xlab = "Use type",
+       ylab = "Species richness")
+
+specnumber(dune)
+dune.env$sr <- specnumber(dune)
+str(dune.env)
+
+
 
 
