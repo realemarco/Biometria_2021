@@ -1,6 +1,7 @@
 # 03/12/2021
 # diamo una condizione al programma e quest'ultimo (in base al fatto che la condizione si T o F) eseguirà delle istruzioni
-# es. x controllare se un numero è > di un altro
+
+# 1. es. x controllare se un numero è > di un altro
 
 x <- 100 # assegno ad x un numero
 
@@ -36,5 +37,28 @@ if(x > 10) {
 }
 
 # [1] "10 is equal to 10"
+
+
+# 2. creiamo una funzione x verificare se un numero è pari o dispari
+# la chiamiamo is_odd come le funzioni is.numeric, is.character etc.
+is_odd <- function (x) {
+if (x %% 2 == 1) {# se x è dispari la condizione darà 1
+print(TRUE)# se x è dispari
+} else {# alternativa alla condizione
+print(FALSE)# se x è pari e la prima condizione è 0
+}
+}
+
+# provo la funzione 
+is_odd(5)
+# [1] TRUE
+# la funzione ha dei limiti, non è applicabile con tutti i numeri, non funziona con la virgola
+# is_odd(1345678)
+#[1] FALSE
+
+
+
+
+
 
 
