@@ -141,6 +141,85 @@ specnumber(dune)
 dune.env$sr <- specnumber(dune)
 str(dune.env)
 
+#03/12/2021
+# riprendiamo dal calclo della sr
+# pacchetto vegan -> funzione specnumber
+# la funzione calcolerà la ricchezza di specie per ciascun sito (20 volte) sul dataset dune
+# se applicata su una matrice di comunità del tipo SITO in riga e SPECIE in colonna calcola la sr nei vari siti
+sr <- specnumber(dune)
+sr
+#1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 #i siti, nomi delle righe
+#5 10 10 13 14 11 13 12 13 12  9  9 10  7  8  8  7  9  9  8 #la sr
+
+# sr è un vettore di ricchezza di specie
+# possiamo inserirlo all'interno di dune.env
+dune.env$sr <- sr # è una variabile integer
+str(dune.env) # per vedere se effettivamente la nuova variabile è stata caricata
+
+# vogliam vedere come la sr varia attraverso i diversi tipi di management, in maniera grafica e intuitiva
+# i boxplot sono indicati per vedere come una variabile CONTINUA varia nelle diverse categorie
+# per crearlo usiamo una particoare sintassi che si chiama formula
+# mettiamo la variaible continua per prima, sarà sulla y -> sr, è la variabile dipendente
+# dopo mettiamo la tilde ~
+# dopo mettiamo la variabile che rappresenta la x, il management, la variabile indipend. che pensiamo determini una variazione
+boxplot(sr ~ Management,# vedremo la sr in funzione della gestione
+       data = dune.env)#specificare da dove vengono i dati
+
+# possiamo renderlo + leggibile dando i nomi delle labels
+boxplot(sr ~ Management,
+       data = dune.env,# l'argomento data rende + semplice e chiaro il codice, altrimenti avremmo dovuto specificare $dune.env per ogni variabile
+       xlab = "Management Type",
+       ylab = "Species richness")
+
+
+
+# infine possiamo creare degli scatterplot o grafici a dispersione con DUE VARIABILI CONTINUE
+# es. la sr in funzione della profondità dell'orizzonte A1
+plot(sr ~ A1,
+    data = dune.env,
+    xlab = "Thickness of A1 soil horizon (cm)",# importante l'unità di misura
+    ylab = "Species richness")
+# non ci sono trend particolari
+
+
+# A. EXPORT DI FIGURE
+# hai creato grafici, puoi esportarli
+# export  direttamente nel pannello dei plots
+# oppure:
+# crea cartella dove mettere gli outputs
+# sulla tab files nell'environment clicca su new folder -> outputs
+png("outputs/sr_vs_a1.png", width = 350, height = 350)#definisci il percorso e il nome dell'immagine che vuoi salvare, definisci altezza e larghezza in pixel
+# immediatamente dopo la chiamata png metto le righe di codice per il grafico da esportare
+plot(sr ~ A1,
+    data = dune.env,
+    xlab = "Thickness of A1 soil horizon (cm)",# importante l'unità di misura
+    ylab = "Species richness")
+dev.off() #con png apriamo un device grafico, come se stessimo aprendo l'otturatore della macchina fotografica, devoff lo chiude
+# l'immagine si troverà nella cartella
+# se è piccola possiamo modificarne i parametri, aggiungendo anche la risoluzione con argomento res che rappresenta i dpi
+png("outputs/sr_vs_a1.png", width = 1800, height = 1800, res = 300)#definisci il percorso e il nome dell'immagine che vuoi salvare, definisci altezza e larghezza
+# immediatamente dopo la chiamata png metto le righe di codice per il grafico da esportare
+plot(sr ~ A1,
+    data = dune.env,
+    xlab = "Thickness of A1 soil horizon (cm)",# importante l'unità di misura
+    ylab = "Species richness")
+dev.off()
+
+# oltre png, funzioni analoghe sono jpg, tiff, pdf etc.
+
+
+# B. EXPORT DEI DATASET, dei file di testo, dei txt, csv
+dune_env_head <- head(dune.env) # la funzione head ci restituisce le prime 6 righe del dataset di default, ammenocchè non indichiamo il n di righe
+
+
+
+
+
+
+
+
+
+
 
 
 
