@@ -273,10 +273,53 @@ chisq.test(species_by_use[, -1]) # -1 vuol dire rimuovimi la colonna 1
 # è molto alto, non è significativo, quindi non possiamo rifiutare l'ipotesi nulla per cui le frequenze delle due specie siano analoghe
 # se fosse stato significativo potevamo rifiutarla e dire che queste sono tra loro indipendenti
 
+#12/01/2022
+# D. COSTRUIRE UNA MATRICE DI FREQUENZA DELLE 2 SPECIE NEI DIVERSI SITI SENZA PASSARE X LA FUNZ AGGREGATE
+# matrice di 2 righe x 2 colonne
+mat <- matrix(c(2, 9, 8, 1), ncol = 2)
+# prima colonna abbiamo 2 e 9
+# seconda colonna abbiamo 8 e 1
+
+# immaginiamo che le colonne rappresentino 2 specie e i valori siano la presenza in due habitat targhet
+# possiamo definire i nomi di colonne e righe
+mat <- matrix(c(2, 9, 8, 1), ncol = 2)
+colnames(mat) <- c("sp1", "sp2")
+rownames(mat) <- c("habitat1", "habitat2")
+mat # sono i valori di frequenza
+# sp1 rara in habitat1 e frequente in 2; sp2 al contrario
+# le due specie hanno distribuzione indipendente dobbiamo testarlo
+chisq.test(mat) 
+# il p-value è 0,007 -> è significativo, la distribuzione è indipendente
+
+# se avessimo avuto questi valori 
+mat <- matrix(c(8, 9, 2, 1), ncol = 2)
+colnames(mat) <- c("sp1", "sp2")
+rownames(mat) <- c("habitat1", "habitat2")
+
+# le 2 specie sembrerebbero avere distribuzione dipendente
+chisq.test(mat) # il p-value è di 1 -> non è significativo, non possiamo parlare di indipendenza
+
+# se il p-value è significativo = DISTRIBUZIONE INDIPENDENTE
 
 
+# vogliamo vedere se i valori di ricchezza di specie tra un tipo di management e un altro sono significativamente differenti o meno
+ # es boxplot
+boxplot(sr ~ Management, data = dune.env)  #come la sr vari in funzione del management
+# vediamo che HF -> molto ricchi in specie, probabilmente è significativamente diverso da  altri 3
+# x testare se questa differenza dipende da questo tipo di gestione:
+# usiamo HB e poi gli altri 3 gruppi accorpati
+# per vedere se i valori di sr in media sono molto diversi tra quello che è HF e quello che non lo è
 
+# il test 
+t.test(dune.env$sr[dune.env$Management == "HF"],
+       dune.env$sr[dune.env$Management != "HF"],
+      alternative = "greater") # greater è la mia ipotesi, che il primo gruppo abbia valore medio > del secondo
+# in parentesi [ mettiamo una condizione logica, selezioniamo solo:
+# elementi per cui dune.env$Management è uguale a HF nella prima stringa
+# elementi per cui dune.env$Management è != (diverso) da HF
 
+# le differenze sono date dal caso o meno?
+#p - value è significativo, possiamo dire che i valori medi sono differenti, come pensavamo guardando il boxplot
 
 
 
