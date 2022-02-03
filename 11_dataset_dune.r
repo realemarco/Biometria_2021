@@ -210,8 +210,68 @@ dev.off()
 
 # B. EXPORT DEI DATASET, dei file di testo, dei txt, csv
 dune_env_head <- head(dune.env) # la funzione head ci restituisce le prime 6 righe del dataset di default, ammenocchè non indichiamo il n di righe
+# possiamo modificare questo comportamento specificando il n di righe
+dune_env_head <- head(dune.env, 8) # avremo le prime 8
+
+# creiamo il nostro dune_env_head, sarà il nostro nuovo dataset
+# x importare o esportare determinato formato di file:
+# primo argomento è il file da esportare dune_env_head
+# il secondo la posizione dove vogliamo esportarlo + /il nome che vogliamo dargli, specificando anche il formato
+write.table(dune_env_head,
+           "outputs/dune_env_head.txt") # abbiamo esportato il nostro primo dataset
+
+# in maniera analoga possiamo esportare in cvs coma separated values (vedi slides) es. stoccare dati tabulari
+write.csv(dune_env_head,
+         "outputs/dune_env_head.csv", row.names = FALSE) 
+# con row.names FALSE è + facile reimportare il dataset, senza usarlo avremo una prima colonna senza intestazine con valori numerici, inutile su R
+
+# C. I PRIMI TEST
+# vogliamo testare se 2 specie nella loro distribuzione sono indipendenti o meno
+# prima di fare questo trasformiamo la nostra matrice di comunità (abbondanze) in una di presenza\assenza
+# valori > di 1 dovranno diventare 1 (presenza)
+# funzione decostand del pacchetto vegan
+
+dune_pa <- decostand(dune, method = "pa")
+# la struttura della matrice dune avrà solo 0 e 1
+# è una matrice di presenza/assenza con valori qualitativi e non quantitativi
+
+# a questo punto vogliamo individuare le due specie + frequenti
+# le 2 specie + freq si distribuiscono in maniera analoga o meno?
+# potrebbero esserci interazioni che fanno si che x competizione di escludino a vicenda
+
+# per prima cosa troviamo le 2 specie + frequenti
+specnumber(dune_pa, MARGIN = 2)
+# il margine: facciamo l'operaizone lungo le righe? in questo caso margine 1. LA SOMMA SARà LA SR
+# facciamo l'operazione lungo le colonne? margine 2. LA SOMMA SARANNO LE FREQUENZE ASSOLUTE DELLE SPECIE
+# otteniamo un vettore di lunghezza 30
 
 
+# le 2 + frequenti sono Scorautu (18) e Trifrepe (16)
+
+# come si comportano? 
+# dobbiamo calcolare una tabella di frequenza tipo:
+#       Sp1      Sp2
+#uso1
+#uso2
+#uso3
+
+#possiamo applicare un test x capire se le due specie si comportano in maniera indipendente o meno
+# es. un chiquadro 
+
+species_by_use <- aggregate(dune_pa[c("Scorautu", "Trifrepe")], # con c selezioniamo solo le colonne che ci interessano
+                           by = list(dune.env$Use), # quì indichiamo cosa vogliamo aggregare e x quale categoria, ci serve una lsita quindi usiamo list
+                           FUN = "sum") # come vogliamo aggregare, quale la funzione. Vogliamo LA SOMMA DELLE PRESENZE DELLE 2 SPECIE NELLE 3 CATEGORIE DI USO
+
+# ne risulta una tabella in cui:
+# colonna Group.1 = contiene le categorie, i gruppi di uso
+# Le altre due colonne sono le specie
+
+# a questo punto come fare il test chiq?
+
+chisq.test(species_by_use[, -1]) # -1 vuol dire rimuovimi la colonna 1
+# p-value = o.89 
+# è molto alto, non è significativo, quindi non possiamo rifiutare l'ipotesi nulla per cui le frequenze delle due specie siano analoghe
+# se fosse stato significativo potevamo rifiutarla e dire che queste sono tra loro indipendenti
 
 
 
