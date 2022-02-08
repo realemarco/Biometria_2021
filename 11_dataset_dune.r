@@ -318,9 +318,44 @@ t.test(dune.env$sr[dune.env$Management == "HF"],
 # elementi per cui dune.env$Management è uguale a HF nella prima stringa
 # elementi per cui dune.env$Management è != (diverso) da HF
 
+# APPUNTI LAVI
 # le differenze sono date dal caso o meno?
 #p - value è significativo, possiamo dire che i valori medi sono differenti, come pensavamo guardando il boxplot
 
+# cerchiamo relazione tra due variabili 
+plot(dune.env$A1, 
+     dune.env$sr)
+
+## TEST DI CORRELAZIONE  ## 
+
+#cor. negativa
+cor.test(dune.env$A1,
+         dune.env$sr,
+         alternative = "less")
+
+#cor positiva
+cor.test(dune.env$A1,
+         dune.env$sr,
+         alternative = "greater")
+
+## MODELLO DI REGRESSIONE LINEARE ##
+mod <- lm(hp ~ disp, data = mtcars ) #funizione linera mode hp in funzione (tilde) di disp
+mod
+
+# per verificare le proprietà del modello mod
+summary(mod)
+
+# GRAFICO DI RETTA DI REGRESSIONE SU SCATTER-PLOT ## 
+
+plot(mtcars$disp,
+     mtcars$hp)
+str(mod) # funzione structure per verificare la struttura 
+mod$coefficients # estrapolo i coefficienti beta0 e beta1 
+
+# funione abline a =intercetta b =coefficiente angolare 
+plot(mtcars$disp,
+     mtcars$hp)
+abline(mod$coefficients[1], mod$coefficients[2])
 
 
 
