@@ -1,311 +1,402 @@
-# 1) ok
-# 2) impot datasets and count the variables
-# richiamo le librerie
-install.packages("vegan")
+
+#necessario installare il pacchetto "vegan"
+
+
+# install.packages("vegan")
 library(vegan)
+#
+# setwd("C:/esamestat") #sembra non servire #rivedere percorso setwd in ogni caso
+#
 
-# scarico i dataset
-mite_env <- read.table("data/mite_env.txt", header = TRUE) # per lettura e importazione tabelle, header per i nomi colonne
-mite_csv <- read.csv("data/mite.csv") #per importare il dataframe
+?mite #così vedo info sul dataset 
 
+###################
+#Oribatid mite data. 70 soil cores collected by Daniel Borcard in 1989. 
+#See Borcard et al. (1992, 1994) for details.
 
-# struttura dataset
+#There are three linked data sets: 
+# mite that contains the data on 35 species of Oribatid mites, 
+# mite.env that contains environmental data in the same sampling sites, 
+# mite.xy that contains geographic coordinates, and mite.pcnm that contains 22 PCNM base functions (columns) computed from the geographic coordinates of the 70 sampling sites (Borcard & Legendre 2002). 
+
+#The whole sampling area was 2.5 m x 10 m in size.
+
+#ELEMENTI DATASET:
+# SubsDens-> Substrate density (g/L)
+# WatrCont -> Water content of the substrate (g/L)
+# Substrate -> Substrate type, factor with levels Sphagn1, Sphagn2 Sphagn3 Sphagn Litter Barepeat Interface
+# Shrub -> Shrub density, an ordered factor with levels 1 < 2 < 3
+# Topo -> Microtopography, a factor with levels Blanket and Hummock
+###################
+
+#2...........................................
+
+mite_env <- read.table("esamestat/data/mite_env.txt", header = TRUE)
+#header=TRUE perchè altrimenti i nomi delle variabili vengono considerati come elementi del dataset
+
 mite_env
+
+
+mite_csv <- read.csv("esamestat/data/mite.csv")
 mite_csv
 
-# quante specie? 
-ncol(mite_csv) # le specie sono in colonna, sommo il numero colonne
-#[1] 35
+#..................................
 
-# quante osservazioni? 70-71
-nrow(mite_csv) # le osservazioni sono le righe
-# [1] 70
+#   Quante specie?
 
-# quante variabili ambientali? 5
-ncol(mite_env) # sono le colonne
+#in mite_csv le specie sono rappresentate in colonna, riferite alla presenza per sito
+#quindi dal numero di colonne mi ricavo il numero di specie
+ncol(mite_csv)
+# [1] 35
+
+
+#   Quante osservazioni (carotaggi effettuati)?
+
+#considero le righe, che rappresentano i carotaggi effettuati per sito
+nrow(mite_csv)
+#[1] 70
+
+
+# Quante variabili ambientali?
+
+#da considerare è il numero di colonne di mite_env
+ncol(mite_env)
+
+#[1] 5
+
+
+
+#Controlliamo che il dataset sia organizzato come nelle info originali
+
+#Subdens
+class(mite_env$SubsDens)
+# [1] "numeric"
+
+#WatrCont
+class(mite_env$WatrCont)
+# [1] "numeric"
+
+#Substrate
+class(mite_env$Substrate)
+# [1] "character" -------> vogliamo sia "factor"
+
+#conversione mite_env$Substrate in factor:
+mite_env$Substrate <- factor(mite_env$Substrate, levels = c("Sphagn1", "Sphagn2", "Sphagn3", "Sphagn4", "Litter", "Barepeat", "Interface"))
+
+class(mite_env$Substrate)
+# [1] "factor"
+
+#Shrub
+class(mite_env$Shrub)
+# [1] "character" -------> vogliamo sia "factor" 
+
+#conversione mite_env$Shrub in factor 
+mite_env$Shrub <- factor(mite_env$Shrub, ordered = T, levels = c("None","Few", "Many"))
+
+class(mite_env$Shrub)                       
+# [1] "ordered" "factor"                          
+
+#Topo
+class(mite_env$Topo)
+
+#conversione mite_env$Topo in "factor"
+mite_env$Topo <- factor(mite_env$Topo, levels = c("Blanket", "Hummock"))   
+
+class(mite_env$Topo)
+# [1] "factor"
+
+
+#ora verifichiamo la struttura:
+str(mite_env)
+
+# dataset corretto:        
+mite_env
+
+
+
+#Calcolo summary e rimozione NAs
+summary(mite_env)
+
+#Righe con NAs:
+is.na(mite_env)
+#righe con NAs -> 2, 45, 50
+
+#creare nuovo mite_env senza NAs
+mite_enw <-mite_env[c(-2, -45, -50),] 
+mite_enw
+
+
+#5....................
+
+#Creazione grafici
+
+library(graphics)
+
+#variabili qualitative 
+
+#Substrate
+subfreq <- table(mite_enw$Substrate)
+
+barplot(subfreq,
+        main = "Frequency of substrate levels",
+        xlab = "Kind of substrate",
+        ylab = "Frequency",
+        col = "dark red")
+
+#Shrub
+shrbfreq <- table(mite_enw$Shrub)
+
+barplot(shrbfreq,
+        main = "Frequency of shrub density",
+        xlab = "Shrub cover density",
+        ylab = "Frequency",
+        col = "dark green")
+                         
+#Topo
+topofreq <- table(mite_enw$Topo)
+
+barplot(topofreq,
+        main = "Frequencies of microtopographies",
+        xlab = "Microtopography",
+        ylab = "Frequency",
+        col = "blue")
+
+#variabili quantitative
+
+#Subdens
+hist(mite_enw$SubsDens,
+     xlab = "Substrate density (g/L)", 
+     main = "Substrate density histogram",
+     breaks = 5,
+     col ="magenta")
+
+
+#WatrCont
+hist(mite_enw$WatrCont,
+     xlab = "Water contenent in substrate (g/L)", 
+     main = "Substrate water content histogram",
+     breaks = 8,
+     col = "light blue")
+
+#Esportazione grafici 
+
+#export Shrub_barplot
+png("esamestat/outputs/Shrub_barplot.png", width = 2800, height = 1800, res = 300)
+
+shrbfreq <- table(mite_enw$Shrub)
+
+barplot(shrbfreq,
+        main = "Frequency of shrub density",
+        xlab = "Shrub cover density",
+        ylab = "Frequency",
+        col = "dark green")
+dev.off()
+
+#export Subdens_hist
+png("esamestat/outputs/Subdens_hist.png", width = 2800, height = 1800, res = 300)
+
+hist(mite_enw$SubsDens,
+     xlab = "Substrate density (g/L)", 
+     main = "Substrate density histogram",
+     breaks = 5,
+     col ="magenta")
+dev.off()
+
+
+#6...........................
+
+#presence/absence
+
+mite.pa <- decostand(mite_csv, method = "pa")
+mite.pa
+
+#decostand mi permette di convertire i dati in presenza/assenza
+#tramote argomento method= "pa"
+
+
+
+#7a..........................
+
+#species richness
+
+#eliminiamo righe che sono NA in Environmental variables
+
+mite_csw <- mite_csv[c(-2, -45, -50), ]
+mite_csw
+
+
+#calcolo species richness 
+specr <- specnumber(mite_csw)
+specr
+
+
+#aggiunta colonna specr
+mite_enw1 <- cbind(mite_enw, specr)
+mite_enw1
+
+
+#7b..........................
+
+#calcolare massimo minimo e media di specr
+
+max(mite_enw1$specr)
+# [1] 25
+
+min(mite_enw1$specr)
 # [1] 5
 
+mean(mite_enw1$specr)
+# [1] 15.02985
 
 
-#3
-?mite # per info sul dataset
-
-# variabili in datasets e documentazione corrispondono?
-str(mite_env)
-#'data.frame':	70 obs. of  5 variables:
-#  $ SubsDens : num  39.2 55 46.1 48.2 23.6 ...
-#$ WatrCont : num  350 435 372 360 204 ...
-#$ Substrate: chr  "Sphagn1" "Litter" "Interface" "Sphagn1" ...
-#$ Shrub    : chr  "Few" "Few" "Few" "Few" ...
-#$ Topo     : chr  "Hummock" "" "Hummock" "Hummock" ...
+#7c...........................
 
 
-# A. mite_env
-# 1. SubsDens
-class(mite_env$SubsDens) # [1] "numeric"
-
-
-# 2. WatrCont
-class(mite_env$WatrCont) # è un numeric
-
-
-# 3. Substrate
-class(mite_env$Substrate) # è un character
-# devo convertirlo in factor
-mite_env$Substrate <- factor(mite_env$Substrate, levels = c("Sphagn1", "Sphagn2", "Sphagn3", "Sphagn4", "Litter", "Barepeat", "Interface"))
-is.factor(mite_env$Substrate)
-# [1] TRUE
-
-# 4. Shrub
-class(mite_env$Shrub) # è un character
-mite_env$Shrub <- factor(mite_env$Shrub, ordered = T, levels = c("None", "Few", "Many"))
-is.factor(mite_env$Shrub)
-#[1] TRUE
-
-mite_env$Shrub # il fattore è adeguatamente ordinato
-
-# 5. Topo
-class(mite_env$Topo) # character
-mite_env$Topo <- factor(mite_env$Topo, levels = c("Blanket", "Hummock"))
-is.factor(mite_env$Topo)
-# [1] TRUE
-
-# verifico la nuova struttura
-str(mite_env)
-#'data.frame':	70 obs. of  5 variables:
-#  $ SubsDens : num  39.2 55 46.1 48.2 23.6 ...
-#$ WatrCont : num  350 435 372 360 204 ...
-#$ Substrate: Factor w/ 7 levels "Sphagn1","Sphagn2",..: 1 5 7 1 1 1 1 7 5 1 ...
-#$ Shrub    : Ord.factor w/ 3 levels "None"<"Few"<"Many": 2 2 2 2 2 2 NA 3 3 3 ...
-#$ Topo     : Factor w/ 2 levels "Blanket","Hummock": 2 NA 2 2 2 2 2 1 1 2 ...
-
-# la struttura è corretta
-
-# 4) summary statistics and NAs in  mite_env
-summary(mite_env)
-#SubsDens        WatrCont         Substrate   Shrub         Topo   
-#Min.   :21.17   Min.   :134.1   Sphagn1  :25   None:18   Blanket:44  
-#1st Qu.:30.01   1st Qu.:314.1   Sphagn2  :11   Few :25   Hummock:25  
-#Median :36.38   Median :398.5   Sphagn3  : 1   Many:25   NA's   : 1  
-# Mean   :39.28   Mean   :410.6   Sphagn4  : 2   NA's: 2               
-#3rd Qu.:46.81   3rd Qu.:492.8   Litter   : 2                         
-#Max.   :80.59   Max.   :827.0   Barepeat : 2                         
-#Interface:27        
-
-
-is.na(mite_env)
-# dove sono gli NA?
-# riga 2, 7, 52
-
-# rimuovo le righe corrispondenti
-mite_env2 <- mite_env[c(-2, -7, -52), ]
-mite_env2
-is.na(mite_env2) # FALSE
-
-# 5) graphical expressio of mite_env2
-
-# quantitativi
-# hist
-# SubsDens
-hist(mite_env2$SubsDens,
-     xlab = "Substrate density (g/L)", 
-     main = NULL, # per modificare il titolo, in questo caso per rimuoverlo
-     breaks = 8,
-     col = "light green") 
-
-# Water content
-hist(mite_env2$WatrCont,
-     xlab = "Water content (g/L)", 
-     main = "Water content of the substrate",
-     breaks = 10,
-     col = "light blue")
-
-
-
-# qualitativi
-# barplots
-# Substrate
-subscount <- table(mite_env2$Substrate) # x calcolare le frequenze del livello
-barplot(subscount,
-        main = "Frequency of different substrate levels",
-        xlab = "Substrate",
-        ylab = "Frequencies",
-        col = "orange")
-# Shrub
-shrubcount <- table(mite_env2$Shrub)
-barplot(shrubcount,
-        main = "Degree of vegetation cover",
-        xlab = "Shrub",
-        ylab = "Frequencies",
+boxplot(specr ~ Topo,
+        data = mite_enw1,
+        xlab = "Microtopography",
+        ylab = "Species richness",
+        main = "Distribution of Species Richness/Microtopography",
         col = "dark green")
 
-# Topo
 
-topocount <- table(mite_env2$Topo)
-barplot(topocount,
-        main = "Microtopography",
+
+# notiamo che in hummock è generalmente presente una maggiore species richness
+# blanket ha una maggiore variabilità (valori estremi più distanti)
+# blacket ha anche un outliar (valore anomalo)
+# la mediana di hummock è maggiore di blanket 
+# il 50% delle osservazioni di hummock è meno disperso rispetto a blanket
+
+png("esamestat/outputs/boxplotspecr_topo.png", width = 1800, height = 1800, res = 300)
+
+boxplot(specr ~ Topo,
+        data = mite_enw1,
         xlab = "Microtopography",
-        ylab = "Frequencies",
-        col = "brown")
-
-# export dei + belli
-png("outputs/WatrCont.png", width = 2800, height = 1800, res = 300)
-hist(mite_env2$WatrCont,
-     xlab = "Water content (g/L)", 
-     main = "Water content of the substrate",
-     breaks = 10,
-     col = "light blue")
-dev.off()
-
-
-png("outputs/Substrate.png", width = 2800, height = 1800, res = 300)
-subscount <- table(mite_env2$Substrate) # x calcolare le frequenze del livello
-barplot(subscount,
-        main = "Frequency of different substrate levels",
-        xlab = "Substrate",
-        ylab = "Frequencies",
-        col = "orange")
-dev.off()
-
-
-png("outputs/shrub.png", width = 1800, height = 1800, res = 300)
-shrubcount <- table(mite_env2$Shrub)
-barplot(shrubcount,
-        main = "Degree of vegetation cover",
-        xlab = "Shrub",
-        ylab = "Frequencies",
+        ylab = "Species richness",
+        main = "Distribution of Species Richness/Microtopography",
         col = "dark green")
 dev.off()
 
-# 6) Is your community matrix presence/absence? If not, convert it to presence/absence.
-# funzione decostand del pacchetto vegan
-mite_pa <- decostand(mite_csv, method = "pa")
-mite_pa
+#8............................
+
+#SubDens/SpecRich
+
+plot(specr ~ SubsDens,
+     data = mite_enw1,
+     cex = 2,
+     xlab = "Substrate density (g/l)",
+     ylab = "Species richness",
+     main = "Distribution of Species Richness/SubsDens",
+     col = "purple")
 
 
-# 7a) Calculate species richness for each observation of your community matrix. 
-
-# prima modifico il dataset mite_csv così da avere lo stesso n di righe di mite_env2
-mite_csv2 <- mite_csv[c(-2, -7, -52), ]
-
-# calcolo la sr
-sr <- specnumber(mite_csv2) # funzione specnumber
-sr
-
-# Then, add it to the environmental variables dataframe as a new column.
-mite_env3 <- cbind(mite_env2, sr)
-mite_env3
-
-# 7b) Which are the maximum, minimum and average species richness in the dataset?
-# devo lavorare su mite_env3
-max(mite_env3$sr) #[1] 25
-min(mite_env3$sr) # [1] 5
-mean(mite_env3$sr) # così dà la media [1] 15.02985
 
 
- # 7c) How does species richness distribute in respect with topo variable? Explore it with a boxplot.
-boxplot(sr ~ Topo,
-        data = mite_env3,
-        xlab = "Microtopography",
-        ylab = "Species richness",
-        main = "Distribution of sr in respect with topo variable")
+#esporto il grafico
 
-# esporto il grafico
-png("outputs/boxplotsrtopo.png", width = 1800, height = 1800, res = 300)
-boxplot(sr ~ Topo,
-        data = mite_env3,
-        xlab = "Microtopography",
-        ylab = "Species richness",
-        main = "Distribution of sr in respect with topo variable")
+png("esamestat/outputs/scatterplot_SR-SD.png", width = 4000, height = 1800, res = 300)
+
+plot(specr ~ SubsDens,
+     data = mite_enw1,
+     cex = 2,
+     xlab = "Substrate Density (g/l)",
+     ylab = "Species Richness",
+     main = "Distribution of Species Richness/SubsDens",
+     col = "purple")
+
 dev.off()
 
-# 8) Plot the distribution of species richness in respect with the available numeric environmental variables. 
-# creo dei grafici a dispersione o scatterplot x 2 variabili continue
 
-# SubsDens
-plot(sr ~ SubsDens,
-     data = mite_env3,
-     cex = 1.5,
-     xlab = "Substrate density (g/l)",# importante l'unità di misura
-     ylab = "Species richness",
-     main = "Distribution of sr in respect with SubsDens variable",
-     col = "red")
-# export
-png("outputs/scatterplotSub.png", width = 4000, height = 1800, res = 300)
-plot(sr ~ SubsDens,
-     data = mite_env3,
-     cex = 1.5,
-     xlab = "Substrate density (g/l)",# importante l'unità di misura
-     ylab = "Species richness",
-     main = "Distribution of sr in respect with SubsDens variable",
-     col = "red")
+#WatrCont/SpecRich
+
+plot(specr ~ WatrCont,
+     data = mite_enw1,
+     cex = 2, 
+     xlab = "Water Content (g/l)",
+     ylab = "Species Richness",
+     main = "Distribution Species Richness/Water Content",
+     col = "dark blue")
+
+#esporto il grafico
+
+png("esamestat/outputs/scatterplot_SR-WC.png", width = 4000, height = 1800, res = 300)
+
+plot(specr ~ WatrCont,
+     data = mite_enw1,
+     cex = 2, 
+     xlab = "Water Content (g/l)",
+     ylab = "Species Richness",
+     main = "Distribution Species Richness/Water Content",
+     col = "dark blue")
+
 dev.off()
 
-# WatrCont
-plot(sr ~ WatrCont,
-     data = mite_env3,
-     cex = 1.5, # per le dimensioni
-     xlab = "Water content (g/l)",# importante l'unità di misura
-     ylab = "Species richness",
-     main = "Distribution of sr in respect with WatrCont variable",
-     col = "blue")
 
-# export
-png("outputs/scatterplotWatr.png", width = 4000, height = 1800, res = 300)
-plot(sr ~ WatrCont,
-     data = mite_env3,
-     cex = 1.5, # per le dimensioni
-     xlab = "Water content (g/l)",# importante l'unità di misura
-     ylab = "Species richness",
-     main = "Distribution of sr in respect with WatrCont variable",
-     col = "blue")
-dev.off()
+#Test per vedere se c'è correlazione tra le variabili numeriche e la Species Richness
 
-# test di correlazione x capire se c'è correlazione + o -
-# The null hypothesis is that there is no correlation between the variables
-# Rigetto H0 quando il p value è molto piccolo e quindi significativo, c'è una correlazione
-# P-value --> soglia a 0,05
-# p-value sotto 0,05 = è sifgnificativo, posso rifiutare l'ipotesi nulla
-# SubsDens
-cor.test(mite_env3$sr,
-         mite_env3$SubsDens)# p-value = 0.5487
-# p-value is not significant there is no correlation
-# accetto l'ipotesi nulla, non c'è correlazione
+#La mia ipotesi nulla (H0) è che non c'è correlazione tra le variabili
+#Rigetto H0 quando il p value è significativo (valore piccolo) e c'è quindi correlazione
+#soglia p value -> 0.05
 
-cor.test(mite_env3$sr,
-         mite_env3$WatrCont) # p-value = 3.06e-11 --> 0.0000000000306 
-# p-value is significant, there is correlation
-# rifiuto l'ipotesi nulla
+#test per specr e Subdens
+cor.test(mite_enw1$specr, mite_enw1$SubsDens)
 
-# is correlation positive or negative?
-
-# correlazione positiva
-cor.test(mite_env3$sr,
-         mite_env3$WatrCont,
-         alternative = "greater")
-# il p value è 1, no correlazione positiva
+# risultato p-value = 0.5028 -> H0 accettata (non c'è correlazione tra le due variabili)
 
 
-# correlazione negativa
-cor.test(mite_env3$sr,
-         mite_env3$WatrCont,
-         alternative = "less") # p-value = 1.53e-11
+#test per specr e Watrcont
+cor.test(mite_enw1$specr, mite_enw1$WatrCont)
 
-# è significativo, la correlazione è negativa
+# risultato p-value = 0,000000007381 -> H0 rigettata (c'è correlazione tra le due variabili)
 
 
 
-# For each numeric environmental variable 
-#significantly correlated with species richness, 
-#run a regression model and inspect its summary.
+# Correlazione positiva o negativa?
+  
+  # test correlazione positiva
+  cor.test(mite_enw1$specr,
+           mite_enw1$WatrCont,
+           alternative = "greater")
 
-# modello di regressione lineare
+# p-value = 1 (no correlazione positiva)
 
-mod <- lm(sr ~ WatrCont, data = mite_env3)
-mod
+
+# test correlazione negativa
+cor.test(mite_enw1$specr,
+         mite_enw1$WatrCont,
+         alternative = "less")
+
+# p-value = 0.000000000003691 -> significativo (correlazione è negativa)
+
+
+
+# morello di regressione linearew tra WarrCont e specr e ispezione summary
+
+
+regmod <- lm(specr ~ WatrCont, data = mite_enw1)
+regmod
 
 # summary
-summary(mod)
+summary(regmod)
 
-# interpretazione risultati 
+#output:
 
+#Call:
+#  lm(formula = specr ~ WatrCont, data = mite_enw1)
+
+#Residuals:
+#  Min      1Q  Median      3Q     Max 
+#-7.9759 -2.1018  0.2023  2.3099  6.8810 
+
+#Coefficients:
+#  Estimate Std. Error t value Pr(>|t|)    
+#(Intercept) 24.38292    1.18937  20.501  < 2e-16 ***
+#  WatrCont    -0.02292    0.00275  -8.336 7.38e-12 ***
+#  ---
+#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#Residual standard error: 3.231 on 65 degrees of freedom
+#Multiple R-squared:  0.5167,	Adjusted R-squared:  0.5093 
+#F-statistic: 69.49 on 1 and 65 DF,  p-value: 7.381e-12
+
+# interpretazione risultati #
